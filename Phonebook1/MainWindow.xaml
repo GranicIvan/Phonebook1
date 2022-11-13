@@ -1,0 +1,50 @@
+﻿<Window x:Class="Phonebook1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Phonebook1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="490" Width="963">
+    <Grid>
+        <Label x:Name="lbl1" Content="Imenik 9000" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Center" Margin="0,22,0,0" FontWeight="Bold" FontFamily="Bahnschrift Light Condensed"/>
+        <Button x:Name="btnUnosNovog" Content="Unos novog kontakta" HorizontalAlignment="Left" Margin="50,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Click="btnUnosNovog_Click" FontSize="14" BorderThickness="1,1,1,1" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="btwExit" Content="Exit" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Margin="0,0,20,20" FontSize="14" Width="35" Click="btwExit_Click"/>
+
+        <ListBox x:Name="LB2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="239,59,0,70" FontSize="14" HorizontalAlignment="Left" Width="280">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat = "{}{0} {1} {2}">
+                                <Binding Path = "Ime"/>
+                                <Binding Path = "Prezime"/>
+                                <Binding Path = "Telefon"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+
+        <Button x:Name="btnPreta" Content="Pretrazi" HorizontalAlignment="Left" Margin="50,120,0,0" VerticalAlignment="Top" FontSize="14" Click="btnPrikaz_Click" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+        <Button x:Name="btnUvozCSV" Content="Uvezi kontakte (CSV)" HorizontalAlignment="Left" Margin="50,165,0,0" VerticalAlignment="Top" Width="140" FontSize="14" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btnUvozCSV_Click"/>
+        <Button x:Name="btnExport" Content="Izvezi kontakte (CSV)" HorizontalAlignment="Left" Margin="50,205,0,0" VerticalAlignment="Top" FontSize="14" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Click="btnExport_Click"/>
+        <Button x:Name="btnTrazi" Content="Trazi kontakt" HorizontalAlignment="Left" Margin="50,325,0,0" VerticalAlignment="Top" Width="140" FontSize="14"/>
+        <Button x:Name="btnInportJSON" Content="Uzevi kontakte (JSON)" HorizontalAlignment="Left" Margin="50,245,0,0" VerticalAlignment="Top" Width="140" FontSize="14" Click="btnInportJSON_Click"/>
+        <Button x:Name="btnExportJSON" Content="Izvezi kontakte (JSON)" HorizontalAlignment="Left" Margin="50,285,0,0" VerticalAlignment="Top" Width="140" FontSize="14" Click="btnExportJSON_Click"/>
+        <Button x:Name="btnEdit" Content="Promeni kontakt" HorizontalAlignment="Left" Margin="50,365,0,0" VerticalAlignment="Top" Width="140" FontSize="14" Click="btnEdit_Click"/>
+        <ListView x:Name="LV1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="550,59,0,67" Width="300" HorizontalAlignment="Left">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Ime}" Header="Ime" Width="80"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Prezime}" Header="Prezime" Width="90"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Telefon}" Header="Broj telefona" Width="120"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
