@@ -45,6 +45,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="btnAzure" Content="Azure funk" HorizontalAlignment="Left" Margin="50,405,0,0" VerticalAlignment="Top" Width="140" Height="23" FontSize="14" BorderThickness="1,1,1,1" Click="btnAzure_Click"/>
 
     </Grid>
 </Window>

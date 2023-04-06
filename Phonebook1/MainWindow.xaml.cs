@@ -22,22 +22,53 @@ using System.Text.Json.Serialization;
 using System.Net.Http.Json;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
+using System.Net.Http;
+using System.Reflection.Metadata;
+using System.Text.Json.Nodes;
 
 namespace Phonebook1
 {
+
+
+
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window 
     {
-        
 
+
+        private static readonly HttpClient client = new HttpClient();
+
+
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
         public MainWindow()
         {
 
             this.Loaded += new RoutedEventHandler(MainWindow_Loaded); //sta je ovo
-            InitializeComponent();            
+            InitializeComponent();
+            kontakti = new();
         }
+
+
+        /// <summary>
+        /// kontakti 
+        /// </summary>
+        /// <param name="kontakti">Podaci koji se prikazuju</param>
+        public MainWindow(ObservableCollection<Kontakt> kontakti)
+        {
+
+            this.Loaded += new RoutedEventHandler(MainWindow_Loaded); //sta je ovo
+            InitializeComponent();
+            this.kontakti = kontakti;
+        }
+
+
+
+
 
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -46,7 +77,7 @@ namespace Phonebook1
             //LB2.DisplayMemberPath = "Ime"; // TO DO kako da ovde lepo ispise
         }
 
-        ObservableCollection<Kontakt> kontakti = new();
+        ObservableCollection<Kontakt> kontakti;
 
 
 
@@ -100,7 +131,7 @@ namespace Phonebook1
         { 
             Trace.WriteLine("################ PRETRAGA ####################");
 
-            ObservableCollection<Kontakt> pretrazena;
+            //ObservableCollection<Kontakt> pretrazena;
 
             var dialog = new Pretrazivanje();
 
@@ -116,82 +147,107 @@ namespace Phonebook1
                 prezimeT = dialog.Odgovor.Prezime;
                 telefonT = dialog.Odgovor.Telefon;
 
-                int opcija = 0;
+                //int opcija = 0;
 
-                if (imeT.Length > 0) opcija = opcija + 1;
-                if (prezimeT.Length > 0) opcija = opcija + 2;
-                if (telefonT.Length > 0) opcija = opcija + 5;
+                //if (imeT.Length > 0) opcija = opcija + 1;
+                //if (prezimeT.Length > 0) opcija = opcija + 2;
+                //if (telefonT.Length > 0) opcija = opcija + 5;
 
                 //IEnumerable<Kontakt> filteringQuery;
 
 
-                switch (opcija)
-                {  
-                    //imamo samo ime
-                    case 1:
-                        IEnumerable<Kontakt> filteringQuery = 
-                        from kon in kontakti
-                        where String.Equals(imeT, kon.Ime, StringComparison.OrdinalIgnoreCase) // String.Equals(root, root2, StringComparison.OrdinalIgnoreCase);
-                        select kon;
-
-                        //where imeT.Equals(kon.Ime)
-
-                        Trace.WriteLine(" - - - - - - Ovo je iz IEnumerable");
-                        foreach (Kontakt kon in filteringQuery) {
-                            Trace.WriteLine(kon);
-                        }
-
-                        pretrazena = new ObservableCollection<Kontakt>(filteringQuery.Cast<Kontakt>());
-
-                        Trace.WriteLine(" - - - - - - Ovo je iz Observable coll");
-                        foreach (Kontakt kon in pretrazena)
-                        {
-                            Trace.WriteLine(kon);
-                        }
-                       break;
-
-
-                    //imamo samo perzime
-                    case 2:
-                        break;
-
-                    //imamo ime i prezime
-                    case 3:
-                        break;
-
-                    //imamo telefon
-                    case 5:
-                        break;
-
-
-                    // imamo ime i telefon
-                    case 6:
-                        break;
-
-                    //imamo prezime i telefon 
-                    case 7:
-                        break;
-
-                    //imamo sve
-                    case 8:
-                        break;
-
-                    default:
-                        MessageBox.Show("Greska!!! usli smo u default");
-                        break;
+                // TEST
+                IEnumerable<Kontakt> trazena = kontakti.Where( x =>
+                                                        ( String.Equals(imeT, x.Ime, StringComparison.OrdinalIgnoreCase) || imeT.Equals("") ) &&
+                                                        ( String.Equals(prezimeT, x.Prezime, StringComparison.OrdinalIgnoreCase) || prezimeT.Equals("") ) &&
+                                                        (String.Equals(telefonT, x.Telefon, StringComparison.OrdinalIgnoreCase) || telefonT.Equals(""))
+                                                        );
+                Trace.WriteLine("Trazeni kontakti su: ");
+                foreach (Kontakt kon in trazena)
+                {
+                    Trace.WriteLine(kon);
                 }
 
 
-                
+                ObservableCollection<Kontakt> trazenaOC = new ObservableCollection<Kontakt>(trazena);
+                //trazenaOC = (ObservableCollection<Kontakt>)trazena;
+
+                MainWindow trazeni = new MainWindow(trazenaOC); 
+                trazeni.Show();
+
+
+
+
+                //    switch (opcija)
+                //    {  
+                //        //imamo samo ime
+                //        case 1:
+                //            IEnumerable<Kontakt> filteringQuery = 
+                //            from kon in kontakti
+                //            where String.Equals(imeT, kon.Ime, StringComparison.OrdinalIgnoreCase) // String.Equals(root, root2, StringComparison.OrdinalIgnoreCase);
+                //            select kon;
+
+                //            //where imeT.Equals(kon.Ime)
+
+                //            Trace.WriteLine(" - - - - - - Ovo je iz IEnumerable");
+                //            foreach (Kontakt kon in filteringQuery) {
+                //                Trace.WriteLine(kon);
+                //            }
+
+                //            pretrazena = new ObservableCollection<Kontakt>(filteringQuery.Cast<Kontakt>());
+
+                //            Trace.WriteLine(" - - - - - - Ovo je iz Observable coll");
+                //            foreach (Kontakt kon in pretrazena)
+                //            {
+                //                Trace.WriteLine(kon);
+                //            }
+                //           break;
+
+
+                //        //imamo samo perzime
+                //        case 2:
+                //            break;
+
+                //        //imamo ime i prezime
+                //        case 3:
+                //            break;
+
+                //        //imamo telefon
+                //        case 5:
+                //            break;
+
+
+                //        // imamo ime i telefon
+                //        case 6:
+                //            break;
+
+                //        //imamo prezime i telefon 
+                //        case 7:
+                //            break;
+
+                //        //imamo sve
+                //        case 8:
+                //            break;
+
+                //        default:
+                //            MessageBox.Show("Greska!!! usli smo u default");
+                //            break;
+                //    }
+
+
+
 
             }
-            else{
+            else
+            {
                 MessageBox.Show("Greska!!! - dijalog nije dobro vratio-");
             }
 
-           
+
 
         }
+
+
 
         private void btnUvozCSV_Click(object sender, RoutedEventArgs e)
         {
@@ -220,7 +276,7 @@ namespace Phonebook1
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine(ex.Message);
             }
         }//uvoz CSV
 
@@ -246,7 +302,7 @@ namespace Phonebook1
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine(ex.Message);
             }
         }
 
@@ -295,7 +351,7 @@ namespace Phonebook1
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine(ex.Message);
             }
 
 
@@ -340,7 +396,7 @@ namespace Phonebook1
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Trace.WriteLine(ex.Message);
             }
         }// import JSON
 
@@ -366,12 +422,125 @@ namespace Phonebook1
         }
 
 
+        private async  void btnAzure_Click(object sender, RoutedEventArgs e)
+        //private void btnAzure_Click(object sender, RoutedEventArgs e)
+        {
+            Trace.WriteLine("Kliknuli smo Azure funk");
+
+            
+
+            try
+            {
+                
+                string jsonZaBody = Newtonsoft.Json.JsonConvert.SerializeObject(kontakti);
+
+                //Trace.WriteLine(jsonZaBody);
+
+
+                try
+                {
+
+
+
+                    string functionUrl = "https://contactlistig.azurewebsites.net/api/VratiListuKontakata?code=U0Jo6mfgn8igMFDEYPHfoQ4Sdo_pSmmj0cQfBsVQE3yUAzFuwjkCpg==";
+                    var response = await CallAzureFunctionAsync(functionUrl, jsonZaBody);
+                    //var response = await CallAzureFunctionAsync(functionUrl, "Ivan");
+
+
+                    // ovo treba var response = CallAzureFunctionAsync(functionUrl, jsonZaBody).Result;
+                    //var response = CallAzureFunctionAsync(functionUrl, "Ivan").Result;
+
+                    Trace.WriteLine($"Odgovor funkcije: {response}");
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine($"Error: {ex.Message}");
+                }
+
+                // mozda ne treba async ovde
+                async Task<string> CallAzureFunctionAsync(string url, string? dobijeniKon)
+                {
+                    if (!String.IsNullOrEmpty(dobijeniKon))
+                    {
+                        url += ("&name=" + dobijeniKon);
+
+                    }
+
+                    //HttpResponseMessage response = await client.GetAsync(url);
+                    var content = new StringContent(jsonZaBody, Encoding.UTF8, "application/json");
+                    //Trace.WriteLine("content je: " + content);
+                    //Trace.WriteLine("content to str: " + content.ToString);
+                    HttpResponseMessage response = client.PostAsync(url, content).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return await response.Content.ReadAsStringAsync();
+                    }
+                    else
+                    {
+                        throw new Exception($"Error u pozivu Azure funkcije. err: {response.StatusCode}");
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.Message);
+            }
+
+
+
+
+            //try
+            //{
+            //    string functionUrl = "https://phonebookivan.azurewebsites.net/api/HttpTriggerTest1?code=uEZgqfXnyqPD-jC5P82E4UP-X6VGQAK_79XYPJnA459nAzFuZfVypA==";
+            //    var response = await CallAzureFunctionAsync(functionUrl, jsonZaBody);
+            //    var response = CallAzureFunctionAsync(functionUrl, jsonZaBody).Result;
+            //    Trace.WriteLine($"Odgovor funkcije: {response}");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Trace.WriteLine($"Error: {ex.Message}");
+            //}
+
+            //public static async Task<string> CallAzureFunctionAsync(string url, string? ime)
+            //{
+            //    if (!String.IsNullOrEmpty(ime))
+            //    {
+            //        url += ("&name=" + ime);
+
+            //    }
+
+            //    if (response.IsSuccessStatusCode)
+            //    {
+            //        return await response.Content.ReadAsStringAsync();
+            //    }
+            //    else
+            //    {
+            //        throw new Exception($"Error u pozivu Azure funkcije. err: {response.StatusCode}");
+            //    }
+            //}
+
+
+
+        }
     }// main window
 }
 
 
 
-//Console.WriteLine("WH!!1");
+
+
+//Trace.WriteLine("WH!!1");
 
 //Trace.WriteLine("--------------------------------------------------------------");
 //Trace.WriteLine("--------------------------------------------------------------");
