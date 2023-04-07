@@ -547,19 +547,20 @@ namespace Phonebook1
 
         public interface IAzureFunctionService
         {
-            [Post("/api/HttpTriggerTest1")]
+            [Post("/api/VratiListuKontakata")]
             Task<string> CallAzureFunction([AliasAs("code")] string code, [Body] ObservableCollection<Kontakt> kon);
         }
 
         private async void btnAzureRefit_Click(object sender, RoutedEventArgs e)
         {
 
-            Trace.WriteLine("Poceli smo Azure Refit ");
+            Trace.WriteLine("Poceli smo Azure Refit -----");
 
             try
             {
-                string baseUrl = "https://phonebookivan.azurewebsites.net";
-                string functionCode = "uEZgqfXnyqPD-jC5P82E4UP-X6VGQAK_79XYPJnA459nAzFuZfVypA==";
+                string baseUrl = "https://contactlistig.azurewebsites.net";                
+                string functionCode = "U0Jo6mfgn8igMFDEYPHfoQ4Sdo_pSmmj0cQfBsVQE3yUAzFuwjkCpg==";
+                //https://contactlistig.azurewebsites.net/api/VratiListuKontakata?code=U0Jo6mfgn8igMFDEYPHfoQ4Sdo_pSmmj0cQfBsVQE3yUAzFuwjkCpg==
 
                 var azureFunctionService = RestService.For<IAzureFunctionService>(baseUrl);
 
@@ -569,14 +570,25 @@ namespace Phonebook1
                 var response = await azureFunctionService.CallAzureFunction(functionCode, kont);
                 Trace.WriteLine($"Response from Azure Function: {response}");
                 //Console.WriteLine($"Response from Azure Function: {response}");
+
+                List<string> dobijenaImena = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(response);
+
+                Trace.WriteLine("ispisujemo dobijena imena: ");
+                foreach (string s in dobijenaImena)
+                {
+                    Trace.WriteLine(s);
+
+                }
+
             }
             catch (Exception ex)
             {
                 Trace.WriteLine($"Error: {ex.Message}");
+                Trace.WriteLine($"Error str: {ex.ToString}");
             }
 
 
-            Trace.WriteLine("Zavrsili smo smo Azure Refit ");
+            
 
         }
     }// main window
