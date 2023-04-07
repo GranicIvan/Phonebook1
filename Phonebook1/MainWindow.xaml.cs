@@ -25,6 +25,9 @@ using System.Security.Cryptography;
 using System.Net.Http;
 using System.Reflection.Metadata;
 using System.Text.Json.Nodes;
+using System.Runtime.InteropServices;
+using Refit;
+using System.Threading.Tasks;
 
 namespace Phonebook1
 {
@@ -451,6 +454,16 @@ namespace Phonebook1
                     //var response = CallAzureFunctionAsync(functionUrl, "Ivan").Result;
 
                     Trace.WriteLine($"Odgovor funkcije: {response}");
+
+                    List<string>  dobijenaImena = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(response);
+
+                    Trace.WriteLine("ispisujemo dobijena imena: ");
+                    foreach (string s in dobijenaImena) {
+                        Trace.WriteLine(s);
+
+                    }
+
+
                 }
                 catch (Exception ex)
                 {
@@ -481,12 +494,6 @@ namespace Phonebook1
                         throw new Exception($"Error u pozivu Azure funkcije. err: {response.StatusCode}");
                     }
                 }
-
-
-
-
-
-
 
 
 
@@ -531,6 +538,45 @@ namespace Phonebook1
             //}
 
 
+
+        }
+
+
+
+
+
+        public interface IAzureFunctionService
+        {
+            [Post("/api/HttpTriggerTest1")]
+            Task<string> CallAzureFunction([AliasAs("code")] string code, [Body] ObservableCollection<Kontakt> kon);
+        }
+
+        private async void btnAzureRefit_Click(object sender, RoutedEventArgs e)
+        {
+
+            Trace.WriteLine("Poceli smo Azure Refit ");
+
+            try
+            {
+                string baseUrl = "https://phonebookivan.azurewebsites.net";
+                string functionCode = "uEZgqfXnyqPD-jC5P82E4UP-X6VGQAK_79XYPJnA459nAzFuZfVypA==";
+
+                var azureFunctionService = RestService.For<IAzureFunctionService>(baseUrl);
+
+
+                var kont = kontakti;
+
+                var response = await azureFunctionService.CallAzureFunction(functionCode, kont);
+                Trace.WriteLine($"Response from Azure Function: {response}");
+                //Console.WriteLine($"Response from Azure Function: {response}");
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"Error: {ex.Message}");
+            }
+
+
+            Trace.WriteLine("Zavrsili smo smo Azure Refit ");
 
         }
     }// main window
