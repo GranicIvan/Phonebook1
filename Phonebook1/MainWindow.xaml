@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Phonebook1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="510" Width="963">
-    <Grid Height="490">
+        Title="MainWindow" Height="538" Width="963">
+    <Grid Height="510">
         <Label x:Name="lbl1" Content="Imenik 9000" VerticalAlignment="Top" FontSize="20" HorizontalAlignment="Center" Margin="0,22,0,0" FontWeight="Bold" FontFamily="Bahnschrift Light Condensed"/>
         <Button x:Name="btnUnosNovog" Content="Unos novog kontakta" HorizontalAlignment="Left" Margin="50,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Click="btnUnosNovog_Click" FontSize="14" BorderThickness="1,1,1,1" Width="140" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-        <Button x:Name="btwExit" Content="Exit" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Margin="0,0,20,20" FontSize="14" Width="35" Click="btwExit_Click"/>
+        <Button x:Name="btwExit" Content="Exit" HorizontalAlignment="Right" VerticalAlignment="Bottom" HorizontalContentAlignment="Center" Margin="0,0,23,34" FontSize="14" Width="35" Click="btwExit_Click"/>
 
         <ListBox x:Name="LB2" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="239,59,0,70" FontSize="14" HorizontalAlignment="Left" Width="280">
             <ListBox.ItemTemplate>
@@ -46,7 +46,7 @@
             </ListView.View>
         </ListView>
         <Button x:Name="btnAzure" Content="Azure funk" HorizontalAlignment="Left" Margin="50,405,0,0" VerticalAlignment="Top" Width="140" Height="23" FontSize="14" BorderThickness="1,1,1,1" Click="btnAzure_Click"/>
-        <Button x:Name="btnAzureRefit" Content="Azure Refit" HorizontalAlignment="Left" Margin="50,439,0,0" VerticalAlignment="Top" Width="140" Height="23" FontSize="14" Click="btnAzureRefit_Click"/>
+        <Button x:Name="btnAzureRefit" Content="Azure Refit" HorizontalAlignment="Left" Margin="50,445,0,0" VerticalAlignment="Top" Width="140" Height="23" FontSize="14" Click="btnAzureRefit_Click"/>
 
     </Grid>
 </Window>
