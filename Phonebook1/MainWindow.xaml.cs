@@ -504,41 +504,6 @@ namespace Phonebook1
                 Trace.WriteLine(ex.Message);
             }
 
-
-
-
-            //try
-            //{
-            //    string functionUrl = "https://phonebookivan.azurewebsites.net/api/HttpTriggerTest1?code=uEZgqfXnyqPD-jC5P82E4UP-X6VGQAK_79XYPJnA459nAzFuZfVypA==";
-            //    var response = await CallAzureFunctionAsync(functionUrl, jsonZaBody);
-            //    var response = CallAzureFunctionAsync(functionUrl, jsonZaBody).Result;
-            //    Trace.WriteLine($"Odgovor funkcije: {response}");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Trace.WriteLine($"Error: {ex.Message}");
-            //}
-
-            //public static async Task<string> CallAzureFunctionAsync(string url, string? ime)
-            //{
-            //    if (!String.IsNullOrEmpty(ime))
-            //    {
-            //        url += ("&name=" + ime);
-
-            //    }
-
-            //    if (response.IsSuccessStatusCode)
-            //    {
-            //        return await response.Content.ReadAsStringAsync();
-            //    }
-            //    else
-            //    {
-            //        throw new Exception($"Error u pozivu Azure funkcije. err: {response.StatusCode}");
-            //    }
-            //}
-
-
-
         }
 
 
@@ -569,7 +534,7 @@ namespace Phonebook1
 
                 var response = await azureFunctionService.CallAzureFunction(functionCode, kont);
                 Trace.WriteLine($"Response from Azure Function: {response}");
-                //Console.WriteLine($"Response from Azure Function: {response}");
+                
 
                 List<string> dobijenaImena = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(response);
 
@@ -588,8 +553,6 @@ namespace Phonebook1
             }
 
 
-            
-
         }
     }// main window
 }
@@ -598,47 +561,4 @@ namespace Phonebook1
 
 
 
-//Trace.WriteLine("WH!!1");
 
-//Trace.WriteLine("--------------------------------------------------------------");
-//Trace.WriteLine("--------------------------------------------------------------");
-//Trace.WriteLine("--------------------------------------------------------------");
-
-//Ovo je nas glavni imenik
-//Imenik imenik = new Imenik();
-//LB2.ItemsSource = (System.Collections.IEnumerable)imenik;
-
-
-//Kontakt kontakt = new Kontakt("Petar", "Peric", "123 456 789");
-//Kontakt kontakt2 = new Kontakt("Marko", "MArkovic", "954 654 321");
-
-//imenik.Add(kontakt);
-//imenik.Add(kontakt2);
-
-//foreach (Kontakt item in imenik)
-//{
-//    Trace.WriteLine(item.ToString());
-//}
-
-//= String[imenik.getSize()]
-//String[] imenikStr = new string[imenik.getSize()];
-
-//for (int i = 0; i < imenik.getSize(); i++)
-//{
-//    imenikStr[i] = imenik.getByIndex(i).ToString();
-//}
-
-
-//Trace.WriteLine("Ovo je sa array-a!!!");
-//foreach (var item in imenikStr)
-//{
-//    Trace.WriteLine(item);
-//}
-
-//LB2 = new ListBox();
-//(System.Collections.IEnumerable)
-//LB2.ItemsSource = imenikStr;//Ovde je greska
-
-//Trace.WriteLine("--------------------------------------------------------------");
-//Trace.WriteLine("--------------------------------------------------------------");
-//Trace.WriteLine("--------------------------------------------------------------");
