@@ -428,13 +428,11 @@ namespace Phonebook1
         private async  void btnAzure_Click(object sender, RoutedEventArgs e)
         //private void btnAzure_Click(object sender, RoutedEventArgs e)
         {
-            Trace.WriteLine("Kliknuli smo Azure funk");
-
+            //Trace.WriteLine("Kliknuli smo Azure funk");
             
 
             try
-            {
-                
+            {                
                 string jsonZaBody = Newtonsoft.Json.JsonConvert.SerializeObject(kontakti);
 
                 //Trace.WriteLine(jsonZaBody);
@@ -443,15 +441,9 @@ namespace Phonebook1
                 try
                 {
 
-
-
                     string functionUrl = "https://contactlistig.azurewebsites.net/api/VratiListuKontakata?code=U0Jo6mfgn8igMFDEYPHfoQ4Sdo_pSmmj0cQfBsVQE3yUAzFuwjkCpg==";
                     var response = await CallAzureFunctionAsync(functionUrl, jsonZaBody);
-                    //var response = await CallAzureFunctionAsync(functionUrl, "Ivan");
 
-
-                    // ovo treba var response = CallAzureFunctionAsync(functionUrl, jsonZaBody).Result;
-                    //var response = CallAzureFunctionAsync(functionUrl, "Ivan").Result;
 
                     Trace.WriteLine($"Odgovor funkcije: {response}");
 
@@ -462,7 +454,6 @@ namespace Phonebook1
                         Trace.WriteLine(s);
 
                     }
-
 
                 }
                 catch (Exception ex)
@@ -494,9 +485,6 @@ namespace Phonebook1
                         throw new Exception($"Error u pozivu Azure funkcije. err: {response.StatusCode}");
                     }
                 }
-
-
-
 
             }
             catch (Exception ex)
