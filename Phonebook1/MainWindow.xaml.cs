@@ -77,7 +77,7 @@ namespace Phonebook1
         {
             LB2.ItemsSource = kontakti;
             LV1.ItemsSource = kontakti; // ovo radi za toString
-            //LB2.DisplayMemberPath = "Ime"; // TO DO kako da ovde lepo ispise
+            //LB2.DisplayMemberPath = "Ime"; //
         }
 
         ObservableCollection<Kontakt> kontakti;
@@ -461,7 +461,7 @@ namespace Phonebook1
                     Trace.WriteLine($"Error: {ex.Message}");
                 }
 
-                // mozda ne treba async ovde
+                
                 async Task<string> CallAzureFunctionAsync(string url, string? dobijeniKon)
                 {
                     if (!String.IsNullOrEmpty(dobijeniKon))
@@ -472,8 +472,7 @@ namespace Phonebook1
 
                     //HttpResponseMessage response = await client.GetAsync(url);
                     var content = new StringContent(jsonZaBody, Encoding.UTF8, "application/json");
-                    //Trace.WriteLine("content je: " + content);
-                    //Trace.WriteLine("content to str: " + content.ToString);
+
                     HttpResponseMessage response = client.PostAsync(url, content).Result;
 
                     if (response.IsSuccessStatusCode)
@@ -500,7 +499,7 @@ namespace Phonebook1
 
         public interface IAzureFunctionService
         {
-            [Post("/api/VratiListuKontakata")]
+            [Post("/api/VratiListuKontakata")] // ovo se konkatenira na baseUrl iz 513. reda
             Task<string> CallAzureFunction([AliasAs("code")] string code, [Body] ObservableCollection<Kontakt> kon);
         }
 
@@ -530,7 +529,6 @@ namespace Phonebook1
                 foreach (string s in dobijenaImena)
                 {
                     Trace.WriteLine(s);
-
                 }
 
             }
